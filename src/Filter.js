@@ -1,8 +1,5 @@
-import React, { useState } from "react";
 
 function Filter(props) {
-  // const [value, setValue] = useState('');
-
   return props.availableFilters.map((section) => {
     return (
       <div>
@@ -16,7 +13,7 @@ function Filter(props) {
               </>
             );
           }
-          if (item.type === "buttons") {
+          else {
             return (
               item.options.map( option =>{
                 return <button onClick={()=>props.clickHandler(section.sectionName,option)}>{option.label}</button>

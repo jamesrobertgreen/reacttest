@@ -8,24 +8,28 @@ import AppliedFilters from "./AppliedFilters.js";
 function App() {
   // const [count, setCount] = useState(0);
 
+  // Add the filter that was clicked, unless it was already in the array of selected filters.
+  const addSelectedFilter = (sectionName, item) => {
+    if (!selectedFilters.find(selectedFilter => selectedFilter.item.id === item.id)){
+      setSelectedFilters([...selectedFilters, { sectionName, item }]);
+    }
+  };
 
-  const updateSelectedFilters = (section,item) =>{
+  // Add the filter that was clicked, unless it was already in the array of selected filters.
+  const removeSelectedFilter = (filterClicked) => {
+    const filteredList = selectedFilters.filter((selectedFilter) => selectedFilter.item.id !== filterClicked.item.id);
+    setSelectedFilters(filteredList);
+  };
 
-    // TODO Check if we have the filter in the array already...
-    // If we don't, add details of the filter applied to the array
-    // selectedFilters.find
-    return [...selectedFilters,item];
-  
-  }
   const [data, setData] = useState([]);
   const [availableFilters, setFilters] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
 
   useEffect(() => {
     const mockData = [
-      { programName: "Test program name1", "status": "active" },
-      { programName: "Test program name2", "status": "inactive" },
-      { programName: "Test program name3", "status": "archived" },
+      { programName: "Test program name1", status: "active" },
+      { programName: "Test program name2", status: "inactive" },
+      { programName: "Test program name3", status: "archived" },
     ];
 
     // TODO - get data from API
@@ -77,17 +81,22 @@ function App() {
     <div className="App">
       {/* <div>{selectedFilters}</div> */}
 
-      <AppliedFilters selectedFilters={selectedFilters}></AppliedFilters>  
+      <AppliedFilters
+        selectedFilters={selectedFilters}
+        clickHandler={(item) => removeSelectedFilter(item)}
+      ></AppliedFilters>
 
-      <Filter clickHandler={(section,item)=>setSelectedFilters(updateSelectedFilters(section,item))} availableFilters={availableFilters} setSelectedFilters={setSelectedFilters} selectedFilters={selectedFilters}></Filter>
-      <Table data={data}></Table>
-
+      <Filter
+        clickHandler={(sectionName, item) =>
+          addSelectedFilter(sectionName, item)
+        }
+        availableFilters={availableFilters}
+        setSelectedFilters={setSelectedFilters}
+        selectedFilters={selectedFilters}
+      ></Filter>
+      <Table data={data} selectedFilters={selectedFilters}></Table>
     </div>
   );
-
-
 }
-
-
 
 export default App;
