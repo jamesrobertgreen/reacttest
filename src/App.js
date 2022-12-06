@@ -79,7 +79,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* <div>{selectedFilters}</div> */}
+      <div>testing</div>
 
       <AppliedFilters
         selectedFilters={selectedFilters}
